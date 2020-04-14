@@ -12,17 +12,24 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useStyles } from "./productList.styles";
 
 export default function Products({ handleClickSetSnackBarOpen }) {
   const [rows, setRows] = useState([]);
+  const [isProductsLoaded, setIsProductsLoaded] = useState(false);
 
   useEffect(() => {
     async function getFetch() {
-      const result = await axios.get("http://localhost:5000/products");
-      setRows(result.data);
-      // console.log(result.data);
+      try {
+        const result = await axios.get("http://localhost:5000/products");
+        setRows(result.data);
+        setIsProductsLoaded(true);
+      } catch (e) {
+        setIsProductsLoaded(false);
+        console.error(e);
+      }
     }
     getFetch();
   }, []);
@@ -31,30 +38,34 @@ export default function Products({ handleClickSetSnackBarOpen }) {
 
   return (
     <Container maxWidth="md">
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="center">Имя продукта</TableCell>
-              <TableCell align="center">Цена</TableCell>
-              <TableCell align="center"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <ProductList
-                key={row.id}
-                id={row.id}
-                productName={row.product_name}
-                productPrice={row.product_price}
-                productUrl={row.product_image}
-                handleClickSetSnackBarOpen={handleClickSetSnackBarOpen}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {isProductsLoaded ? (
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                <TableCell align="center">Имя продукта</TableCell>
+                <TableCell align="center">Цена</TableCell>
+                <TableCell align="center"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map(row => (
+                <ProductList
+                  key={row.id}
+                  id={row.id}
+                  productName={row.product_name}
+                  productPrice={row.product_price}
+                  productUrl={row.product_image}
+                  handleClickSetSnackBarOpen={handleClickSetSnackBarOpen}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <CircularProgress color="secondary" className={classes.progressBar} />
+      )}
     </Container>
   );
 }

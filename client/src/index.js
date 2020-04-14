@@ -15,11 +15,3 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
-
-// function About() {
-//   return <h2>About</h2>;
-// }
-
-// function Users() {
-//   return <h2>Users</h2>;
-// }

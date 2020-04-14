@@ -21,5 +21,8 @@ export const useStyles = makeStyles({
   },
   confirmButton: {
     marginLeft: "auto"
+  },
+  progressBar: {
+    margin: "0 auto"
   }
 });
