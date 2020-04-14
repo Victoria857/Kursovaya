@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 
-import { useStyles } from "./NewsList.style";
+import { useStyles } from "./newsList.style";
 const NewsList = ({ news }) => {
   const classes = useStyles();
   return (

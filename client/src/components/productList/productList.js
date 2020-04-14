@@ -2,45 +2,41 @@ import React from "react";
 
 import axios from "axios";
 
+import { useSnackbar } from "notistack";
+
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
 
-const ProductList = ({
-  id,
-  productName,
-  productPrice,
-  productUrl,
-  handleClickSetSnackBarOpen
-}) => {
-  //   const [state, setState] = React.useState({
-  //     open: false,
-  //     vertical: "top",
-  //     horizontal: "center"
-  //   });
-  //   const { vertical, horizontal, open } = state;
+const ProductList = ({ id, productName, productPrice, productUrl }) => {
+  const { enqueueSnackbar } = useSnackbar();
 
-  //   const handleClick = newState => () => {
-  //     setState({ open: true, ...newState });
-  //   };
+  const handleClickOpenSnackbar = (name, variant) =>
+    enqueueSnackbar(name, { variant });
 
   const handleClickAddToBasket = (productName, productPrice, productUrl) => {
-    console.log(`${productName} has been added`);
-    handleClickSetSnackBarOpen();
+    // handleClickOpenSnackbar(productName, "success");
+
     axios({
       method: "post",
       url: "http://localhost:5000/basket",
-      data: { productName, productPrice, productUrl }
-    });
+      data: {
+        productName,
+        productPrice,
+        productUrl
+      }
+    })
+      .then(() =>
+        handleClickOpenSnackbar("товар был добавлен в корзину", "success")
+      )
+      .catch(e => {
+        handleClickOpenSnackbar("не удалось добавить в корзину", "error");
+        console.error(e);
+      });
   };
 
-  //   const handleClose = () => {
-  //     setState({ ...state, open: false });
-  //   };
   return (
     <TableRow>
-      {/* <Snackbar message="Продукт был добавлен в корзину" /> */}
       <TableCell component="th" scope="row">
         <img
           src={productUrl}

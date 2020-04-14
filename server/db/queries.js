@@ -16,7 +16,29 @@ const getProducts = (request, response) => {
   });
 };
 
-const addBasketToProducts = (request, response) => {
+const getBasket = (request, response) => {
+  pool.query("SELECT * FROM basket", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+const removeFromBasketById = (request, response) => {
+  const id = request.params.id;
+
+  pool.query("DELETE FROM basket WHERE id = $1", [id], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response
+      .status(200)
+      .send(`Product has been deleted from basket with id: ${id}`);
+  });
+};
+
+const addProductToBasket = (request, response) => {
   const { productName, productPrice, productUrl } = request.body;
 
   pool.query(
@@ -39,8 +61,6 @@ const addBasketToProducts = (request, response) => {
 
 const createUser = (request, response) => {
   const { name, email, login, password } = request.body;
-  global.console.log(request.params);
-  global.console.log(request.body);
 
   pool.query(
     "INSERT INTO users (name, email, login, password) VALUES ($1, $2, $3, $4)",
@@ -73,21 +93,6 @@ const getUserById = (request, response) => {
     response.status(200).json(results.rows);
   });
 };
-
-// const createUser = (request, response) => {
-//   const { name, email, login, password } = request.body;
-
-//   pool.query(
-//     "INSERT INTO users (name, email, login, password) VALUES ($1, $2, $3, $4)",
-//     [name, email, login, password],
-//     (error, results) => {
-//       if (error) {
-//         throw error;
-//       }
-//       response.status(201).send(`User added with ID: ${results.insertId}`);
-//     }
-//   );
-// };
 
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id);
@@ -123,5 +128,7 @@ module.exports = {
   updateUser,
   deleteUser,
   getProducts,
-  addBasketToProducts
+  addProductToBasket,
+  getBasket,
+  removeFromBasketById
 };

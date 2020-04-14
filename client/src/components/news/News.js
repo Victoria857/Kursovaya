@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
-import NewsList from "./NewsList";
+import NewsList from "./newsList";
 
-import { useStyles } from "./NewsList.style";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { useStyles } from "./newsList.style";
 
 const NEWS_URL =
   "http://newsapi.org/v2/top-headlines?country=ru&apiKey=b2dd9ebb18cd41f481e282915f4c0ffc";

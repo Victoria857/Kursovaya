@@ -12,7 +12,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
 
 import { useStyles } from "./productList.styles";
 
@@ -23,7 +22,7 @@ export default function Products({ handleClickSetSnackBarOpen }) {
     async function getFetch() {
       const result = await axios.get("http://localhost:5000/products");
       setRows(result.data);
-      console.log(result.data);
+      // console.log(result.data);
     }
     getFetch();
   }, []);
