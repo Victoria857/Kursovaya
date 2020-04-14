@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Header from "./components/header/header";
 
-import Main from "./components/main/main";
+import Home from "./components/home/home";
 
 import News from "./components/news/news";
 import Products from "./components/productList/products";
@@ -40,6 +40,6 @@ function App() {
 
 export default App;
 
-function Home() {
-  return <h2>Главная</h2>;
-}
+// function Home() {
+//   return <h2>Главная</h2>;
+// }
