@@ -2,9 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "description": "NodeJs + Express + PostgreSQL",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Victoria857/Kursovaya/tree/master/server"
+  },
   "license": "MIT",
   "scripts": {
-    "server": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
