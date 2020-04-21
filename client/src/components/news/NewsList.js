@@ -13,7 +13,7 @@ import { useStyles } from "./newsList.style";
 const NewsList = ({ news }) => {
   const classes = useStyles();
   return (
-    <Grid container spacing={3}>
+    <Grid container>
       {news.map((item, id) => (
         <Grid item xs={3} key={id}>
           <Paper className={classes.paper}>

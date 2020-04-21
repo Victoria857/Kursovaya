@@ -1,9 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 5000;
+const morgan = require("morgan");
+const port = process.env.PORT || 5000;
+
+require("dotenv").config();
 
 const db = require("./db/queries");
+
+// console.log(process.env);
 
 app.use(express.json());
 app.use(
@@ -12,6 +17,7 @@ app.use(
   })
 );
 app.use(cors());
+app.use(morgan("common"));
 
 app.get("/", (request, response) => {
   response.send("Node.js, Express, and Postgres API");

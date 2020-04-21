@@ -4,11 +4,12 @@ import { Switch, Route } from "react-router-dom";
 
 import Header from "./components/header/header";
 
-import Home from "./components/home/home";
+import Auth from "./components/auth/auth";
 
 import News from "./components/news/news";
 import Products from "./components/productList/products";
 import Basket from "./components/basket/basket";
+import createCard from "./components/createCard/createCard";
 
 import { useStyles } from "./components/main/main.styles";
 
@@ -20,18 +21,11 @@ function App() {
       <Header />
       <main className={classes.main}>
         <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/news">
-            <News />
-          </Route>
-          <Route path="/products">
-            <Products />
-          </Route>
-          <Route path="/basket">
-            <Basket />
-          </Route>
+          <Route exact path="/" component={Auth} />
+          <Route exact path="/create_card" component={createCard} />
+          <Route path="/products" component={Products} />
+          <Route path="/basket" component={Basket} />
+          <Route path="/news" component={News} />
         </Switch>
       </main>
     </div>
@@ -39,7 +33,3 @@ function App() {
 }
 
 export default App;
-
-// function Home() {
-//   return <h2>Главная</h2>;
-// }

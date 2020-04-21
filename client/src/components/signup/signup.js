@@ -28,6 +28,17 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
+            id="name"
+            label="Имя"
+            name="name"
+            autoComplete="name"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             id="email"
             label="Email"
             name="email"

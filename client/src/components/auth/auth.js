@@ -1,18 +1,18 @@
 import React from "react";
 
-import Singin from "../signin/signin";
+import Signin from "../signin/signin";
 import Signup from "../signup/signup";
 import { Container } from "@material-ui/core";
-import { useStyles } from "../home/home.styles";
+import { useStyles } from "./auth.styles";
 
-function Home() {
+function Auth() {
   const classes = useStyles();
   return (
     <Container className={classes.container}>
-      <Singin />
+      <Signin />
       <Signup />
     </Container>
   );
 }
 
-export default Home;
+export default Auth;

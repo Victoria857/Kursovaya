@@ -21,9 +21,9 @@ function Header() {
               Интернет Банкинг
             </Typography>
           </Link>
-          <Link className={classes.links} to="/news">
+          <Link className={classes.links} to="/create_card">
             <Typography variant="h6" className={classes.title}>
-              Новости
+              Cоздать карту
             </Typography>
           </Link>
           <Link className={classes.links} to="/products">
@@ -34,6 +34,11 @@ function Header() {
           <Link className={classes.links} to="/basket">
             <Typography variant="h6" className={classes.title}>
               Корзина
+            </Typography>
+          </Link>
+          <Link className={classes.links} to="/news">
+            <Typography variant="h6" className={classes.title}>
+              Новости
             </Typography>
           </Link>
         </Toolbar>

@@ -1,17 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary,
-    boxShadow: "none",
-    backgroundColor: "#fafafa"
+    boxShadow: "none"
   },
   root: {
+    flexGrow: 1,
     minWidth: 275,
     minHeight: 350,
     display: "flex",

@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  pg:
+    image: "postgres"
+    restart: always
+    container_name: "postgres_db"
+    environment:
+      - POSTGRES_USER=tetrafour
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg/db_data:/var/lib/postgresql/data
+    # env_file:
+    #   - database.env
+
+  server:
+    container_name: "server"
+    build: ./server/
+    ports:
+      - "5000:5000"
+
+    environment:
+      - DB_HOST=pg
+      - DB_USER=tetrafour
+      - DB_NAME=test
+      - DB_PASSWORD=123
+    depends_on:
+      - pg
+
+  client:
+    container_name: "client"
+    stdin_open: true
+    build: ./client/
+    ports:
+      - "3000:3000"
+    links:
+      - server
