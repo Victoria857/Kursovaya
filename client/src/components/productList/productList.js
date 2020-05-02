@@ -19,17 +19,17 @@ const ProductList = ({ id, productName, productPrice, productUrl }) => {
 
     axios({
       method: "post",
-      url: "http://localhost:5000/basket",
+      url: "http://localhost:5000/api/basket",
       data: {
         productName,
         productPrice,
-        productUrl
-      }
+        productUrl,
+      },
     })
       .then(() =>
         handleClickOpenSnackbar("товар был добавлен в корзину", "success")
       )
-      .catch(e => {
+      .catch((e) => {
         handleClickOpenSnackbar("не удалось добавить в корзину", "error");
         console.error(e);
       });

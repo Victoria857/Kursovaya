@@ -18,13 +18,16 @@ export default function News() {
 
   const classes = useStyles();
 
-  useEffect(() => {
-    axios(NEWS_URL).then(result => {
-      setNews(result.data.articles);
-      setIsNewsLoaded(true);
-    });
-  }, []);
+  const fetchNews = async () => {
+    const result = await axios(NEWS_URL);
+    setNews(result.data.articles);
+    setIsNewsLoaded(true);
+  };
 
+  useEffect(() => {
+    fetchNews();
+  }, []);
+  console.log(news);
   return (
     <div className={classes.root}>
       <Typography

@@ -7,7 +7,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { Button } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 
-const deleteFromBasketUrl = id => `http://localhost:5000/basket/${id}`;
+const deleteFromBasketUrl = (id) => `http://localhost:5000/api/basket/${id}`;
 
 const BasketList = ({ basket, handleClickRefreshData }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -15,18 +15,30 @@ const BasketList = ({ basket, handleClickRefreshData }) => {
   const handleClickOpenSnackbar = (name, variant) =>
     enqueueSnackbar(name, { variant });
 
-  const handleClickRemoveFromBasket = id => {
-    axios({
-      method: "delete",
-      data: { id },
-      url: deleteFromBasketUrl(id)
-    })
-      .then(() => handleClickRefreshData())
-      .then(() => handleClickOpenSnackbar(`товар удален из корзины`, "success"))
-      .catch(e => {
-        handleClickOpenSnackbar("не удалось удалить из корзины", "error");
-        console.error(e);
+  const handleClickRemoveFromBasket = async (id) => {
+    try {
+      await axios({
+        method: "delete",
+        data: { id },
+        url: deleteFromBasketUrl(id),
       });
+      handleClickRefreshData();
+      handleClickOpenSnackbar(`товар удален из корзины`, "success");
+    } catch (error) {
+      handleClickOpenSnackbar("не удалось удалить из корзины", "error");
+      console.error(error);
+    }
+    // await axios({
+    //   method: "delete",
+    //   data: { id },
+    //   url: deleteFromBasketUrl(id),
+    // })
+    //   .then(() => handleClickRefreshData())
+    //   .then(() => handleClickOpenSnackbar(`товар удален из корзины`, "success"))
+    //   .catch((e) => {
+    //     handleClickOpenSnackbar("не удалось удалить из корзины", "error");
+    //     console.error(e);
+    //   });
   };
 
   return (

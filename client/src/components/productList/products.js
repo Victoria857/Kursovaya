@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
+import { useHistory } from "react-router-dom";
+
 import ProductList from "./productList";
 
 import Table from "@material-ui/core/Table";
@@ -19,11 +21,20 @@ import { useStyles } from "./productList.styles";
 export default function Products({ handleClickSetSnackBarOpen }) {
   const [rows, setRows] = useState([]);
   const [isProductsLoaded, setIsProductsLoaded] = useState(false);
+  const history = useHistory();
 
+  // useEffect(() => {
+  // if (!localStorage.getItem("jwt-token")) {
+  //   history.push("/");
+  // }
+  // }, []);
   useEffect(() => {
+    if (!localStorage.getItem("jwt-token")) {
+      history.push("/");
+    }
     async function getFetch() {
       try {
-        const result = await axios.get("http://localhost:5000/products");
+        const result = await axios.get("http://localhost:5000/api/products");
         setRows(result.data);
         setIsProductsLoaded(true);
       } catch (e) {
@@ -50,7 +61,7 @@ export default function Products({ handleClickSetSnackBarOpen }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
+              {rows.map((row) => (
                 <ProductList
                   key={row.id}
                   id={row.id}

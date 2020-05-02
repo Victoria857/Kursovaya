@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import Signin from "../signin/signin";
-import Signup from "../signup/signup";
-import { Container } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+
+import SignIn from "../signIn/signIn";
+import SignUp from "../signUp/signUp";
+import Container from "@material-ui/core/Container";
 import { useStyles } from "./auth.styles";
 
-function Auth() {
+function Auth({ isAuth, setIsAuth }) {
+  const history = useHistory();
+
+  useEffect(() => {
+    if (localStorage.getItem("jwt-token")) {
+      history.push("/profile");
+    }
+  }, []);
+
   const classes = useStyles();
   return (
     <Container className={classes.container}>
-      <Signin />
-      <Signup />
+      <SignIn isAuth={isAuth} setIsAuth={setIsAuth} />
+      <SignUp />
     </Container>
   );
 }

@@ -4,7 +4,7 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
+  port: process.env.DB_PORT,
 });
 
 const getProducts = (request, response) => {
@@ -44,7 +44,7 @@ const addProductToBasket = (request, response) => {
   pool.query(
     "INSERT INTO basket (product_name, product_price, product_url) VALUES ($1, $2, $3)",
     [productName, productPrice, productUrl],
-    error => {
+    (error) => {
       if (error) {
         throw error;
       }
@@ -130,5 +130,5 @@ module.exports = {
   getProducts,
   addProductToBasket,
   getBasket,
-  removeFromBasketById
+  removeFromBasketById,
 };

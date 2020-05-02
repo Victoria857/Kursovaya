@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Switch, Route } from "react-router-dom";
 
@@ -12,20 +12,31 @@ import Basket from "./components/basket/basket";
 import createCard from "./components/createCard/createCard";
 
 import { useStyles } from "./components/main/main.styles";
+import Profile from "./components/profile/profile";
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
   const classes = useStyles();
 
   return (
     <div className="App">
-      <Header />
+      <Header isAuth={isAuth} setIsAuth={setIsAuth} />
       <main className={classes.main}>
         <Switch>
-          <Route exact path="/" component={Auth} />
-          <Route exact path="/create_card" component={createCard} />
-          <Route path="/products" component={Products} />
-          <Route path="/basket" component={Basket} />
-          <Route path="/news" component={News} />
+          <Route
+            exact
+            path="/"
+            render={() => <Auth isAuth={isAuth} setIsAuth={setIsAuth} />}
+          />
+          <Route
+            exact
+            path="/profile"
+            render={() => <Profile setIsAuth={setIsAuth} />}
+          />
+          <Route path="/profile/create_card" component={createCard} />
+          <Route path="/profile/products" component={Products} />
+          <Route path="/profile/basket" component={Basket} />
+          <Route path="/profile/news" component={News} />
         </Switch>
       </main>
     </div>

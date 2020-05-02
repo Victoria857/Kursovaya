@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 import Table from "@material-ui/core/Table";
 import Container from "@material-ui/core/Container";
@@ -17,17 +19,19 @@ import { useStyles } from "./basketList.style";
 
 import BasketList from "./basketList";
 
-const amountCounter = arr =>
+const amountCounter = (arr) =>
   arr.reduce((total, nextElm) => total + nextElm.product_price, 0);
 
-const BASKET_URL = "http://localhost:5000/basket";
+const BASKET_URL = "http://localhost:5000/api/basket";
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
+
   const [isBasketLoaded, setIsBasketLoaded] = useState(false);
 
   const [amount, setAmount] = useState(0);
 
+  const history = useHistory();
   async function fetchBasketData(URL) {
     try {
       const result = await axios.get(URL);
@@ -42,6 +46,9 @@ const Basket = () => {
   }
 
   useEffect(() => {
+    if (!localStorage.getItem("jwt-token")) {
+      history.push("/");
+    }
     fetchBasketData(BASKET_URL);
   }, []);
 

@@ -1,40 +1,27 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const morgan = require("morgan");
+
 const port = process.env.PORT || 5000;
 
-require("dotenv").config();
+const passport = require("./config/passport");
 
-const db = require("./db/queries");
+const routes = require("./routes");
 
-// console.log(process.env);
-
+app.use(passport.initialize());
 app.use(express.json());
 app.use(
   express.urlencoded({
-    extended: true
+    extended: true,
   })
 );
+// app.use(passport.initialize());
 app.use(cors());
 app.use(morgan("common"));
-
-app.get("/", (request, response) => {
-  response.send("Node.js, Express, and Postgres API");
-});
-
-app.get("/products", db.getProducts);
-
-app.get("/basket", db.getBasket);
-app.post("/basket", db.addProductToBasket);
-app.delete("/basket/:id", db.removeFromBasketById);
-
-app.get("/users", db.getUsers);
-app.get("/users/:id", db.getUserById);
-app.post("/users", db.createUser);
-app.put("/users/:id", db.updateUser);
-app.delete("/users/:name", db.deleteUser);
+app.use(routes);
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}.`);
+  console.log(`App running on port ${port}...`);
 });

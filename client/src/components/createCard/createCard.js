@@ -6,11 +6,15 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Container } from "@material-ui/core";
 
+import { useHistory } from "react-router-dom";
+
 export default function PaymentForm() {
   const [username, setUsername] = useState({ value: "", isValid: true });
-  const [cardNumber, setCardNumber] = useState({ value: "", isValid: true });
+  const [cardNumber, setCardNumber] = useState({ value: 0, isValid: true });
   const [expDate, setExpDate] = useState({ value: "", isValid: true });
-  const [cvv, setCvv] = useState({ value: "", isValid: true });
+  const [cvv, setCvv] = useState({ value: 0, isValid: true });
+
+  const history = useHistory();
 
   const usernameChangeHandler = useCallback(
     (event) => {
@@ -21,7 +25,7 @@ export default function PaymentForm() {
 
   const cardNumberChangeHandler = useCallback(
     (event) => {
-      setCardNumber({ ...cardNumber, value: event.target.value });
+      setCardNumber({ ...cardNumber, value: +event.target.value });
     },
     [cardNumber]
   );
@@ -34,16 +38,29 @@ export default function PaymentForm() {
 
   const cvvChangeHandler = useCallback(
     (event) => {
-      setCvv({ ...cvv, value: event.target.value });
+      setCvv({ ...cvv, value: +event.target.value });
     },
     [cvv]
   );
-  useEffect(() => {}, [username]);
+  const submitHandler = useCallback(
+    (event) => {
+      event.preventDefault();
+      event.target.reset();
+    },
+    [username, cardNumber, expDate, cvv]
+  );
 
+  useEffect(() => {
+    if (!localStorage.getItem("jwt-token")) {
+      history.push("/");
+    }
+  }, []);
+
+  console.log(cardNumber, username, expDate, cvv);
   return (
     <div className="card">
       <Container>
-        <form noValidate>
+        <form noValidate onSubmit={(e) => submitHandler(e)}>
           <Typography variant="h4" gutterBottom>
             Создание карты
           </Typography>
@@ -56,8 +73,8 @@ export default function PaymentForm() {
                 name="cardName"
                 label="Имя Владельца"
                 fullWidth
-                value={username.value}
-                onChange={usernameChangeHandler}
+                // value={username.value}
+                onChange={(e) => usernameChangeHandler(e)}
                 helperText={
                   !username.isValid ? "такого пользователя не существует" : ""
                 }
@@ -71,8 +88,8 @@ export default function PaymentForm() {
                 name="cardNumber"
                 label="Номер карты"
                 fullWidth
-                value={cardNumber.value}
-                onChange={cardNumberChangeHandler}
+                // value={cardNumber.value}
+                onChange={(e) => cardNumberChangeHandler(e)}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -83,8 +100,8 @@ export default function PaymentForm() {
                 name="expDate"
                 label="Дата истечения срока"
                 fullWidth
-                value={expDate.value}
-                onChange={expDateChangeHandler}
+                // value={expDate.value}
+                onChange={(e) => expDateChangeHandler(e)}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -96,8 +113,8 @@ export default function PaymentForm() {
                 label="CVV"
                 helperText="Последние три цифры на обороте карты"
                 fullWidth
-                value={cvv.value}
-                onChange={cvvChangeHandler}
+                // value={cvv.value}
+                onChange={(e) => cvvChangeHandler(e)}
               />
             </Grid>
           </Grid>
