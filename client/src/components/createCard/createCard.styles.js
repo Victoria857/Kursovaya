@@ -1,11 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles({
-  table: {
-    minWidth: 650
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "30px",
   },
-  progressBar: {
-    margin: "0 auto",
-    display: "block"
-  }
 });

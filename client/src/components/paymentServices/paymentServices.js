@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { useHistory } from "react-router-dom";
 
-import ProductList from "./productList";
+import PaymentServicesList from "./paymentServicesList";
 
 import Table from "@material-ui/core/Table";
 import Container from "@material-ui/core/Container";
@@ -16,25 +16,22 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { useStyles } from "./productList.styles";
+import { useStyles } from "./paymentServices.styles";
 
-export default function Products({ handleClickSetSnackBarOpen }) {
+export default function PaymentServices({ userUniqueId }) {
   const [rows, setRows] = useState([]);
-  const [isProductsLoaded, setIsProductsLoaded] = useState(false);
+  const [isProductsLoaded, setIsProductsLoaded] = useState(true);
   const history = useHistory();
 
-  // useEffect(() => {
-  // if (!localStorage.getItem("jwt-token")) {
-  //   history.push("/");
-  // }
-  // }, []);
   useEffect(() => {
     if (!localStorage.getItem("jwt-token")) {
       history.push("/");
     }
     async function getFetch() {
       try {
-        const result = await axios.get("http://localhost:5000/api/products");
+        const result = await axios.get(
+          "http://localhost:5000/services/getBankServices"
+        );
         setRows(result.data);
         setIsProductsLoaded(true);
       } catch (e) {
@@ -54,21 +51,19 @@ export default function Products({ handleClickSetSnackBarOpen }) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="center">Имя продукта</TableCell>
+                <TableCell align="center">Название операции</TableCell>
                 <TableCell align="center">Цена</TableCell>
                 <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <ProductList
+                <PaymentServicesList
                   key={row.id}
                   id={row.id}
-                  productName={row.product_name}
-                  productPrice={row.product_price}
-                  productUrl={row.product_image}
-                  handleClickSetSnackBarOpen={handleClickSetSnackBarOpen}
+                  serviceName={row.name}
+                  servicePrice={row.cost}
+                  userUniqueId={userUniqueId}
                 />
               ))}
             </TableBody>

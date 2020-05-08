@@ -14,10 +14,14 @@ import { useStyles } from "./profile.styles";
 
 const URL_GET_USER_WITH_TOKEN = "http://localhost:5000/auth/getUser";
 
-const Profile = ({ setIsAuth }) => {
+const Profile = ({ setIsAuth, userUniqueId }) => {
   const classes = useStyles();
 
   const history = useHistory();
+
+  const [userCards, setUserCards] = useState([]);
+
+  // console.log(userUniqueId);
   const signOutHandleClick = () => {
     localStorage.removeItem("jwt-token");
     history.push("/");
@@ -31,8 +35,21 @@ const Profile = ({ setIsAuth }) => {
       history.push("/");
     }
     getUser();
-  }, []);
+    getCards();
+  }, [userUniqueId]);
 
+  async function getCards() {
+    try {
+      const cards = await axios.get(
+        `http://localhost:5000/cards/getCards/${userUniqueId}`
+      );
+
+      setUserCards([...cards.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // console.log(userCards);
   async function getUser() {
     try {
       const jwt = getJwt();
@@ -68,7 +85,11 @@ const Profile = ({ setIsAuth }) => {
           Выйти из аккаунта
         </Button>
       </div>
-      <CardList />
+      <CardList
+        userCards={userCards}
+        getCards={getCards}
+        userUniqueId={userUniqueId}
+      />
     </Container>
   );
 };

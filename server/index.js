@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const morgan = require("morgan");
+// const knex = require("knex");
 
 const port = process.env.PORT || 5000;
 
@@ -19,7 +19,7 @@ app.use(
 );
 // app.use(passport.initialize());
 app.use(cors());
-app.use(morgan("common"));
+
 app.use(routes);
 
 app.listen(port, () => {

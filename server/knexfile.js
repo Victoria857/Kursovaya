@@ -10,4 +10,7 @@ module.exports = {
       port: process.env.DB_PORT,
     },
   },
+  migrations: {
+    tableName: "knex_migrations",
+  },
 };

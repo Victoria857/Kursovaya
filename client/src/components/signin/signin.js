@@ -16,7 +16,7 @@ import { useStyles } from "./signIn.styles";
 
 const GET_TOKEN_URL = "http://localhost:5000/auth/getToken";
 
-export default function SignIn({ isAuth, setIsAuth }) {
+export default function SignIn({ isAuth, setIsAuth, setUserUniqueId }) {
   const classes = useStyles();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -47,13 +47,16 @@ export default function SignIn({ isAuth, setIsAuth }) {
           login: userCred.login,
           password: userCred.password,
         });
+        // console.log(getToken.data);
+
         const login = JSON.parse(getToken.config.data).login;
-        localStorage.setItem("jwt-token", getToken.data);
+        localStorage.setItem("jwt-token", getToken.data.token);
         history.push("/profile");
+        setUserUniqueId(getToken.data.id);
         setIsAuth(true);
-        handleClickOpenSnackbar(`Здравствуйте, ${login}`, "success");
+        handleClickOpenSnackbar(`Вы успешно авторизировались`, "success");
       } catch (error) {
-        console.log(error.response);
+        // console.log(error.response);
         handleClickOpenSnackbar(error.response.data.responseContent, "error");
       }
     },

@@ -7,7 +7,7 @@ import SignUp from "../signUp/signUp";
 import Container from "@material-ui/core/Container";
 import { useStyles } from "./auth.styles";
 
-function Auth({ isAuth, setIsAuth }) {
+function Auth({ isAuth, setIsAuth, setUserUniqueId }) {
   const history = useHistory();
 
   useEffect(() => {
@@ -19,7 +19,11 @@ function Auth({ isAuth, setIsAuth }) {
   const classes = useStyles();
   return (
     <Container className={classes.container}>
-      <SignIn isAuth={isAuth} setIsAuth={setIsAuth} />
+      <SignIn
+        isAuth={isAuth}
+        setIsAuth={setIsAuth}
+        setUserUniqueId={setUserUniqueId}
+      />
       <SignUp />
     </Container>
   );

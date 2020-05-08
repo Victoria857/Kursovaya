@@ -8,13 +8,28 @@ import { Container } from "@material-ui/core";
 
 import { useHistory } from "react-router-dom";
 
-export default function PaymentForm() {
+import { useStyles } from "./createCard.styles";
+
+import axios from "axios";
+
+import { useSnackbar } from "notistack";
+
+export default function PaymentForm({ userUniqueId }) {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [username, setUsername] = useState({ value: "", isValid: true });
   const [cardNumber, setCardNumber] = useState({ value: 0, isValid: true });
-  const [expDate, setExpDate] = useState({ value: "", isValid: true });
   const [cvv, setCvv] = useState({ value: 0, isValid: true });
+  const [initialCash, setInitialCash] = useState({ value: 0, isValid: true });
+
+  const handleClickOpenSnackbar = (name, variant) =>
+    enqueueSnackbar(name, { variant });
 
   const history = useHistory();
+
+  // console.log(initialCash);
+
+  const classes = useStyles();
 
   const usernameChangeHandler = useCallback(
     (event) => {
@@ -29,12 +44,6 @@ export default function PaymentForm() {
     },
     [cardNumber]
   );
-  const expDateChangeHandler = useCallback(
-    (event) => {
-      setExpDate({ ...expDate, value: event.target.value });
-    },
-    [expDate]
-  );
 
   const cvvChangeHandler = useCallback(
     (event) => {
@@ -42,12 +51,35 @@ export default function PaymentForm() {
     },
     [cvv]
   );
-  const submitHandler = useCallback(
+  const initialCashChangeHandler = useCallback(
     (event) => {
+      setInitialCash({ ...initialCash, value: +event.target.value });
+    },
+    [initialCash]
+  );
+  const submitHandler = useCallback(
+    async (event) => {
       event.preventDefault();
       event.target.reset();
+      try {
+        await axios({
+          method: "post",
+          url: "http://localhost:5000/cards/createCard",
+          data: {
+            cardOwner: username.value.toUpperCase(),
+            cardNumber: cardNumber.value,
+            cvv: cvv.value,
+            initialCash: initialCash.value,
+            userOwnerId: userUniqueId,
+          },
+        });
+        handleClickOpenSnackbar("карта создана", "success");
+        history.push("/");
+      } catch (error) {
+        handleClickOpenSnackbar(error.response.data.responseContent, "error");
+      }
     },
-    [username, cardNumber, expDate, cvv]
+    [username, cardNumber, cvv, initialCash]
   );
 
   useEffect(() => {
@@ -56,15 +88,15 @@ export default function PaymentForm() {
     }
   }, []);
 
-  console.log(cardNumber, username, expDate, cvv);
+  // console.log(cardNumber, username, cvv);
   return (
     <div className="card">
       <Container>
+        <Typography variant="h4" gutterBottom>
+          Создание карты
+        </Typography>
         <form noValidate onSubmit={(e) => submitHandler(e)}>
-          <Typography variant="h4" gutterBottom>
-            Создание карты
-          </Typography>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} className={classes.form}>
             <Grid item xs={12} md={6}>
               <TextField
                 error={!username.isValid}
@@ -73,7 +105,6 @@ export default function PaymentForm() {
                 name="cardName"
                 label="Имя Владельца"
                 fullWidth
-                // value={username.value}
                 onChange={(e) => usernameChangeHandler(e)}
                 helperText={
                   !username.isValid ? "такого пользователя не существует" : ""
@@ -88,22 +119,10 @@ export default function PaymentForm() {
                 name="cardNumber"
                 label="Номер карты"
                 fullWidth
-                // value={cardNumber.value}
                 onChange={(e) => cardNumberChangeHandler(e)}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                required
-                error={!expDate.isValid}
-                id="expDate"
-                name="expDate"
-                label="Дата истечения срока"
-                fullWidth
-                // value={expDate.value}
-                onChange={(e) => expDateChangeHandler(e)}
-              />
-            </Grid>
+
             <Grid item xs={12} md={6}>
               <TextField
                 required
@@ -113,12 +132,33 @@ export default function PaymentForm() {
                 label="CVV"
                 helperText="Последние три цифры на обороте карты"
                 fullWidth
-                // value={cvv.value}
                 onChange={(e) => cvvChangeHandler(e)}
               />
             </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                required
+                error={!initialCash.isValid}
+                id="initialCash"
+                name="initialCash"
+                label="Начальная сумма"
+                fullWidth
+                helperText="руб. коп."
+                onChange={(e) => initialCashChangeHandler(e)}
+              />
+            </Grid>
           </Grid>
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={
+              !username.value ||
+              !cardNumber.value ||
+              !cvv.value ||
+              !initialCash.value
+            }
+          >
             Зарегестрировать карту
           </Button>
         </form>

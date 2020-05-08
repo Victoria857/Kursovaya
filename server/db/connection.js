@@ -14,4 +14,6 @@ const securePassword = require("bookshelf-secure-password");
 const db = bookshelf(knexDb);
 db.plugin(securePassword);
 
+// knex.migrate.latest(knexDb.connection);
+
 module.exports = db;

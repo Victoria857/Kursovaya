@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -32,26 +32,34 @@ function Header({ isAuth, setIsAuth }) {
           </Link>
           {isAuth && (
             <>
-              <Link className={classes.links} to="/profile/create_card">
+              <NavLink
+                className={classes.links}
+                to="/profile/create_card"
+                activeClassName="active"
+              >
                 <Typography variant="h6" className={classes.title}>
                   Cоздать карту
                 </Typography>
-              </Link>
-              <Link className={classes.links} to="/profile/products">
+              </NavLink>
+              <NavLink className={classes.links} to="/profile/services">
                 <Typography variant="h6" className={classes.title}>
-                  Товары
+                  Сервисы
                 </Typography>
-              </Link>
-              <Link className={classes.links} to="/profile/basket">
+              </NavLink>
+              <NavLink
+                className={classes.links}
+                to="/profile/payment_history"
+                activeClassName="active"
+              >
                 <Typography variant="h6" className={classes.title}>
-                  Корзина
+                  история операций
                 </Typography>
-              </Link>
-              <Link className={classes.links} to="/profile/news">
+              </NavLink>
+              <NavLink className={classes.links} to="/profile/news">
                 <Typography variant="h6" className={classes.title}>
                   Новости
                 </Typography>
-              </Link>
+              </NavLink>
             </>
           )}
         </Toolbar>

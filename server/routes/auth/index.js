@@ -68,7 +68,11 @@ router.post("/getToken", async (req, res) => {
   try {
     const userAuth = await existingUser.authenticate(password);
     const payload = { id: userAuth.id };
-    const token = jwt.sign(payload, process.env.SECRET_OR_KEY);
+    console.log(payload);
+    const token = {
+      token: jwt.sign(payload, process.env.SECRET_OR_KEY),
+      id: payload.id,
+    };
     return res.send(token);
   } catch (error) {
     return res.status(401).json({ responseContent: "что-то пошло не так" });
@@ -82,19 +86,5 @@ router.get(
     res.send("i'm protected");
   }
 );
-
-// const db = require("../../db/queries");
-
-// router.get("/products", db.getProducts);
-
-// router.get("/basket", db.getBasket);
-// router.post("/basket", db.addProductToBasket);
-// router.delete("/basket/:id", db.removeFromBasketById);
-
-// router.get("/users", db.getUsers);
-// router.get("/users/:id", db.getUserById);
-// router.post("/users", db.createUser);
-// router.put("/users/:id", db.updateUser);
-// router.delete("/users/:name", db.deleteUser);
 
 module.exports = router;
